@@ -9,14 +9,21 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.shatskiy.vel.dao.TenderDAO;
 import com.shatskiy.vel.domain.Tender;
 import com.shatskiy.vel.service.MicroService;
 import com.shatskiy.vel.service.parser.MicroParser;
 
 @Service
 public class MicroServiceImpl implements MicroService{
+	
+	@Autowired
+	@Qualifier("csvTenderDAO")
+	private TenderDAO csvTenderDAO;
 	
 	private static final Logger log = Logger.getLogger(MicroServiceImpl.class);
 	
@@ -60,12 +67,8 @@ public class MicroServiceImpl implements MicroService{
 		tender.setEmail(email);
 		tender.setPhone(phone);
 		
-		
-
-		
-		
-		
-		
+		csvTenderDAO.addTender(tender);
+		//TODO
 
 		
 	}
