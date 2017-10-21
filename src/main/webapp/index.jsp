@@ -15,7 +15,7 @@
 <body>
 
      <form method="get" action="info" >
-     	<input type="hidden" name="hardCodeNumber" value="1111"/>
+     	<input type="hidden" name="hardCodeNumber" value="497743"/>
 		<button type="submit" class="list-group-item active">infoTender</button>
 	</form>
 
