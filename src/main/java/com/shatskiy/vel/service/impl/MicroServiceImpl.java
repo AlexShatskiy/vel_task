@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,17 +24,24 @@ public class MicroServiceImpl implements MicroService{
 	@Qualifier("csvTenderDAO")
 	private TenderDAO csvTenderDAO;
 	
+	@Autowired
+	@Qualifier("sqlTenderDAO")
+	private TenderDAO sqlTenderDAO;
+	
 	private static final Logger log = Logger.getLogger(MicroServiceImpl.class);
 	
 	private static final String HARD_CODE_ADDRESS = "http://www.icetrade.by/tenders/all/view/";
 
 	@Override
-	public void addInfo(int number) {
+	public void addInfo(int id) {
 		
-		String fullAddres = HARD_CODE_ADDRESS + number;
+		String fullAddres = HARD_CODE_ADDRESS + id;
+		Document doc = null;
 		
 		Tender tender = new Tender();
-		Document doc = null;
+		String finish = null;
+		String[] email = null;
+		String[] phone = null;
 		
 		try {
 			doc = Jsoup.connect(fullAddres).get();
@@ -45,31 +51,31 @@ public class MicroServiceImpl implements MicroService{
 		
 		StringBuffer textEmailPhone = new StringBuffer();
 		
-		Elements emailPhoneToParseData = doc.select(".af-customer_data >.afv");
-		Elements emailPhoneToParseContacts = doc.select(".af-customer_contacts >.afv");
-		Elements finishTender = doc.select(".af-request_end >.afv");
+		Elements emailPhoneToParseDataHtml = doc.select(".af-customer_data >.afv");
+		Elements emailPhoneToParseContactsHtml = doc.select(".af-customer_contacts >.afv");
+		Elements finishTenderHtml = doc.select(".af-request_end >.afv");
 		
-		for(Element x : emailPhoneToParseData){
+		for(Element x : emailPhoneToParseDataHtml){
 			textEmailPhone.append(x.text());
 		}
 		
-		for(Element x : emailPhoneToParseContacts){
+		for(Element x : emailPhoneToParseContactsHtml){
 			textEmailPhone.append(x.text());
 		}
 		
-		for(Element x : finishTender){
-			tender.setFinishTender(x.text());
+		for(Element x : finishTenderHtml){
+			finish = x.text();
 		}
 		
-		List<String> email = MicroParser.findEmail(textEmailPhone.toString());
-		List<String> phone = MicroParser.findPhone(textEmailPhone.toString());
+		email = MicroParser.findEmail(textEmailPhone.toString());
+		phone = MicroParser.findPhone(textEmailPhone.toString());
 		
+		tender.setId(id);
 		tender.setEmail(email);
 		tender.setPhone(phone);
+		tender.setFinish(finish);
 		
 		csvTenderDAO.addTender(tender);
-		//TODO
-
-		
+		sqlTenderDAO.addTender(tender);	
 	}
 }

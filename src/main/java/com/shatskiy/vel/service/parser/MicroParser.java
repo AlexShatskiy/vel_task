@@ -11,22 +11,27 @@ public final class MicroParser {
 		super();
 	}
 
-	public static List<String> findEmail(String emailPhone) {
+	public static String[] findEmail(String emailPhone) {
 
 		List<String> list = new ArrayList<String>();
+		String[] mass = null;
 
 		Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+").matcher(emailPhone);
 		
 		while (m.find()) {
 			list.add(m.group());
 		}
-		return list;
+		mass = new String[list.size()];
+		mass = list.toArray(mass);
+		
+		return mass;
 	}
 
-	public static List<String> findPhone(String emailPhone) {
+	public static String[] findPhone(String emailPhone) {
 
 		List<String> list = new ArrayList<String>();
-
+		String[] mass = null;
+		
 		Matcher mobile = Pattern.compile("^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$").matcher(emailPhone);
 		while (mobile.find()) {
 			list.add(mobile.group());
@@ -40,6 +45,9 @@ public final class MicroParser {
 		while (freeStyle.find()) {
 			list.add(freeStyle.group());
 		}
-		return list;
+		mass = new String[list.size()];
+		mass = list.toArray(mass);
+		
+		return mass;
 	}
 }

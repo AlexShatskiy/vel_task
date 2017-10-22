@@ -26,9 +26,9 @@ public final class CsvFormat {
 		builder.append(",");
 
 		if (tender.getEmail() != null) {
-			for (int i = 0; i < tender.getEmail().size(); i++) {
-				builder.append(tender.getEmail().get(i));
-				if (i < tender.getEmail().size() - 1) {
+			for (int i = 0; i < tender.getEmail().length; i++) {
+				builder.append(tender.getEmail()[i]);
+				if (i < tender.getEmail().length - 1) {
 					builder.append("||");
 				}
 			}
@@ -36,17 +36,17 @@ public final class CsvFormat {
 		builder.append(",");
 		
 		if (tender.getPhone() != null) {
-			for (int i = 0; i < tender.getPhone().size(); i++) {
-				builder.append(tender.getPhone().get(i));
-				if (i < tender.getPhone().size() - 1) {
+			for (int i = 0; i < tender.getPhone().length; i++) {
+				builder.append(tender.getPhone()[i]);
+				if (i < tender.getPhone().length - 1) {
 					builder.append("||");
 				}
 			}
 		}
 		builder.append(",");
 		
-		if (tender.getFinishTender() != null) {
-			builder.append(tender.getFinishTender());
+		if (tender.getFinish() != null) {
+			builder.append(tender.getFinish());
 		}
 		builder.append("\n");
 		
