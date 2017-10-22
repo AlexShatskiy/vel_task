@@ -1,27 +1,30 @@
 package com.shatskiy.vel.domain;
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="tender")
 public class Tender implements Serializable {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="tender_id")
 	private Integer id;
 	
-	@Column(name="email")
-	private String[] email;
+	@OneToMany(mappedBy="tender")
+	private Set<Email> email;
 	
-	@Column(name="phone")
-	private String[] phone;
+	@OneToMany(mappedBy="tender")
+	private Set<Phone> phone;
 	
 	@Column(name="finish")
 	private String finish;
@@ -38,19 +41,19 @@ public class Tender implements Serializable {
 		this.id = id;
 	}
 
-	public String[] getEmail() {
+	public Set<Email> getEmail() {
 		return email;
 	}
 
-	public void setEmail(String[] email) {
+	public void setEmail(Set<Email> email) {
 		this.email = email;
 	}
 
-	public String[] getPhone() {
+	public Set<Phone> getPhone() {
 		return phone;
 	}
 
-	public void setPhone(String[] phone) {
+	public void setPhone(Set<Phone> phone) {
 		this.phone = phone;
 	}
 
@@ -66,10 +69,10 @@ public class Tender implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Arrays.hashCode(email);
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((finish == null) ? 0 : finish.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + Arrays.hashCode(phone);
+		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		return result;
 	}
 
@@ -82,7 +85,10 @@ public class Tender implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Tender other = (Tender) obj;
-		if (!Arrays.equals(email, other.email))
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
 			return false;
 		if (finish == null) {
 			if (other.finish != null)
@@ -94,7 +100,10 @@ public class Tender implements Serializable {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (!Arrays.equals(phone, other.phone))
+		if (phone == null) {
+			if (other.phone != null)
+				return false;
+		} else if (!phone.equals(other.phone))
 			return false;
 		return true;
 	}

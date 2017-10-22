@@ -1,5 +1,7 @@
 package com.shatskiy.vel.dao.format;
 
+import com.shatskiy.vel.domain.Email;
+import com.shatskiy.vel.domain.Phone;
 import com.shatskiy.vel.domain.Tender;
 
 public final class CsvFormat {
@@ -26,21 +28,25 @@ public final class CsvFormat {
 		builder.append(",");
 
 		if (tender.getEmail() != null) {
-			for (int i = 0; i < tender.getEmail().length; i++) {
-				builder.append(tender.getEmail()[i]);
-				if (i < tender.getEmail().length - 1) {
+			int i = 0;
+			for (Email email : tender.getEmail()) {
+				builder.append(email.getValue());
+				if (i < tender.getEmail().size() - 1) {
 					builder.append("||");
 				}
+				i++;
 			}
 		}
 		builder.append(",");
 		
 		if (tender.getPhone() != null) {
-			for (int i = 0; i < tender.getPhone().length; i++) {
-				builder.append(tender.getPhone()[i]);
-				if (i < tender.getPhone().length - 1) {
+			int i = 0;
+			for (Phone phone : tender.getPhone()) {
+				builder.append(phone.getValue());
+				if (i < tender.getPhone().size() - 1) {
 					builder.append("||");
 				}
+				i++;
 			}
 		}
 		builder.append(",");

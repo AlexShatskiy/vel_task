@@ -14,7 +14,7 @@ public class MicroController {
 	private MicroService microService;
 	
 	@RequestMapping("/info")
-	public String info(@RequestParam(value = "hardCodeNumber") int number) {
+	public String info(@RequestParam(value = "number") int number) {
 		
 		microService.addInfo(number);
 		

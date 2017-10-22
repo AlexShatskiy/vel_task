@@ -1,9 +1,12 @@
 package com.shatskiy.vel.service.parser;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.shatskiy.vel.domain.Email;
+import com.shatskiy.vel.domain.Phone;
 
 public final class MicroParser {
 	
@@ -11,43 +14,43 @@ public final class MicroParser {
 		super();
 	}
 
-	public static String[] findEmail(String emailPhone) {
+	public static Set<Email> findEmail(String emailPhone) {
 
-		List<String> list = new ArrayList<String>();
-		String[] mass = null;
+		Set<Email> set = new HashSet<>();
 
 		Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+").matcher(emailPhone);
 		
 		while (m.find()) {
-			list.add(m.group());
+			Email email = new Email();
+			email.setValue(m.group());
+			set.add(email);
 		}
-		mass = new String[list.size()];
-		mass = list.toArray(mass);
-		
-		return mass;
+		return set;
 	}
 
-	public static String[] findPhone(String emailPhone) {
+	public static Set<Phone> findPhone(String emailPhone) {
 
-		List<String> list = new ArrayList<String>();
-		String[] mass = null;
-		
+		Set<Phone> set = new HashSet<>();
+
 		Matcher mobile = Pattern.compile("^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$").matcher(emailPhone);
 		while (mobile.find()) {
-			list.add(mobile.group());
+			Phone phone = new Phone();
+			phone.setValue(mobile.group());
+			set.add(phone);
 		}
 		Matcher noMobile = Pattern.compile("(8 0(25|29|33|34) ([0-9]{3}( [0-9]{2}){2}))").matcher(emailPhone);
 		while (noMobile.find()) {
-			list.add(noMobile.group());
+			Phone phone = new Phone();
+			phone.setValue(noMobile.group());
+			set.add(phone);
 		}
 		
 		Matcher freeStyle = Pattern.compile("\\d{3}\\s\\d{2}\\s\\d{2}|\\d{3}-\\d{2}-\\d{2}").matcher(emailPhone);
 		while (freeStyle.find()) {
-			list.add(freeStyle.group());
+			Phone phone = new Phone();
+			phone.setValue(freeStyle.group());
+			set.add(phone);
 		}
-		mass = new String[list.size()];
-		mass = list.toArray(mass);
-		
-		return mass;
+		return set;
 	}
 }

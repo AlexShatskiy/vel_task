@@ -1,7 +1,7 @@
 package com.shatskiy.vel.service.impl;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.shatskiy.vel.dao.TenderDAO;
+import com.shatskiy.vel.domain.Email;
+import com.shatskiy.vel.domain.Phone;
 import com.shatskiy.vel.domain.Tender;
 import com.shatskiy.vel.service.MicroService;
 import com.shatskiy.vel.service.parser.MicroParser;
@@ -40,8 +42,8 @@ public class MicroServiceImpl implements MicroService{
 		
 		Tender tender = new Tender();
 		String finish = null;
-		String[] email = null;
-		String[] phone = null;
+		Set<Email> email = null;
+		Set<Phone> phone = null;
 		
 		try {
 			doc = Jsoup.connect(fullAddres).get();
@@ -66,11 +68,10 @@ public class MicroServiceImpl implements MicroService{
 		for(Element x : finishTenderHtml){
 			finish = x.text();
 		}
-		
+
 		email = MicroParser.findEmail(textEmailPhone.toString());
 		phone = MicroParser.findPhone(textEmailPhone.toString());
-		
-		tender.setId(id);
+
 		tender.setEmail(email);
 		tender.setPhone(phone);
 		tender.setFinish(finish);

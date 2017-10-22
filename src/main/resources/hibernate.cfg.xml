@@ -19,10 +19,12 @@
         <property name="show_sql">true</property>
 
         <!-- Drop and re-create all database on startup -->
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
 
         <!-- Annotated entity classes -->
         <mapping class="com.shatskiy.vel.domain.Tender"/>
+        <mapping class="com.shatskiy.vel.domain.Email"/>
+        <mapping class="com.shatskiy.vel.domain.Phone"/>
         
     </session-factory>
 </hibernate-configuration>
